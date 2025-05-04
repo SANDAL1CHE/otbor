@@ -1,0 +1,81 @@
+#Алгоритм:
+#1. Инициализировать начальную позицию луча (l, 0) и направление (cos(α), sin(α)).
+#2. На каждом шаге:
+#   a. Определить расстояние до ближайшей стены.
+#   b. Проверить, пересекает ли луч окружность на этом пути.
+#   c. Если пересекает, вернуть количество отражений.
+#   d. Иначе, обновить направление луча после отражения и увеличить счетчик отражений.
+#3. Если после отражений пересечения не произошло, вернуть "никогда".
+
+
+
+
+
+
+
+import math
+def f(a, b, l, x, y, R, ugol):
+    if ugol==0:
+        return ("никогда не пересечет")
+    max_ = 1e6
+    ugol = math.radians(ugol)
+    sin_ = math.sin(ugol)
+    cos_ = math.cos(ugol)
+    pos_x = l
+    pos_y = 0
+    n_sin = sin_
+    n_cos = cos_
+    k = 0
+    for i in range(int(max_)):
+        if n_cos > 0:
+            h = (a - pos_x)/n_cos
+            h_ = None
+        else:
+            h_= (0 - pos_x)/n_cos
+            h = None
+        if n_sin > 0:
+            h1 = (b - pos_y)/n_sin
+            h1_ = None
+        else:
+            h1_ = (0 - pos_y)/n_sin
+            h1 = None
+        m = []
+        if h is not None and h > int(1e-9):
+            m.append(h)
+        if h_ is not None and h_ > int(1e-9):
+            m.append(h_)
+        if h1 is not None and h1 > int(1e-9):
+            m.append(h1)
+        if h1_ is not None and h1_ > int(1e-9):
+            m.append(h1_)
+        if len(m) == 0:
+            return ('никогда не пересечется')
+        else:
+            t_min = min(m)
+        px = round((pos_x+t_min*n_cos-x)/a)
+        py = round((pos_y+t_min*n_sin-y)/b)
+        ox = x+px*a
+        oy = y+py*b
+        if (ox-pos_x)*n_cos>=0 and (oy-pos_y)*n_sin>=0:
+            q = (abs(n_sin*(pos_x-ox)-n_cos*(pos_y-oy)))/(n_cos**2+n_sin**2)**0.5
+            if q<=R+int(1e-9):
+                return k+1
+        pos_x = pos_x+t_min*n_cos
+        pos_y = pos_y+t_min*n_sin
+        if t_min==h or t_min==h_:
+            n_cos = n_cos*(-1)
+        elif t_min==h1 or t_min==h1_:
+            n_sin = n_sin*(-1)
+        k+=1
+    return ('никогда не пересечется')
+
+
+a=float(input())
+b=float(input())
+l=float(input())
+x=float(input())
+y=float(input())
+R=float(input())
+ugol=float(input())
+g=f(a, b, l, x, y, R, ugol)
+print(g)
