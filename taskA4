@@ -1,0 +1,29 @@
+a='D:\работы\CdSe_CdZnS Core_Shell.txt'
+b=[]
+with open(a, 'r', encoding='UTF-8') as file:
+    for a in file:
+        a=a.strip()
+        if not a:
+            continue
+        c=a.split()
+        d=float(c[0].replace(',', '.'))
+        d1 =float(c[1].replace(',', '.'))
+        b.append([d, d1])
+print(b)
+s=0
+k=len(b)
+for i in b:
+    s+=i[1]
+print(s/k)
+b1=[]
+for i in b:
+    if i[1]>0:
+        s1=(s/k)-i[1]
+        b1.append(s1**2)
+    else:
+        s1=(s/k)+i[1]
+        b1.append(s1**2)
+s2=0
+for i in b1:
+    s2+=i
+print((s2/len(b1))**0.5)
